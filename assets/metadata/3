@@ -1,0 +1,11 @@
+{
+    "name": "Bnomial Gold Medal",
+    "description": "The badge certifies that the owner achieved a gold medal on the leaderboard.",
+    "image": "ipfs://QmfFSMhxwq4JESi3179nK54ydhUbrpAxDwaDJMUHC253tg/3.png",
+    "attributes": [
+        {
+            "trait_type": "Level",
+            "value": 3
+        }
+    ]
+}
