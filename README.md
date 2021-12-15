@@ -64,3 +64,7 @@ To verify the smart contract:
 ```
 npm run verify:mumbai -- <smart contract address>
 ```
+
+## Deployed contract for testing
+
+The current contract is deployed on the Mumbai testnet here: [0x3F3B4A7D474b924dBc517f7069A3E6D208237A4B](https://mumbai.polygonscan.com/address/0x3F3B4A7D474b924dBc517f7069A3E6D208237A4B)
