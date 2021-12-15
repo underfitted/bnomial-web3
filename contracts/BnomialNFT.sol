@@ -4,6 +4,8 @@ pragma solidity ^0.8.2;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "./Base64.sol";
 
 contract BnomialNFT is ERC721, Ownable {
     using Counters for Counters.Counter;
@@ -15,7 +17,7 @@ contract BnomialNFT is ERC721, Ownable {
     constructor() ERC721("Bnomial Achievement Badge", "BNOMIAL") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmNaqB6a4bguztjSJXDDnp8C2dCzArWVjnmQcnVq1ZJwPi/";
+        return "ipfs://QmUE45oBmtMweg6skYBj21navRCgPs29q6p9oSmeYMAUqt/";
     }
 
     function totalSupply() public view returns (uint256) {
@@ -50,18 +52,39 @@ contract BnomialNFT is ERC721, Ownable {
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        string memory baseURI = _baseURI();
         address owner = ownerOf(tokenId);
         uint256 level = _levels[owner];
 
-        if (level == 1) {
-            return string(abi.encodePacked(baseURI, "1"));
-        } else if (level == 2) {
-            return string(abi.encodePacked(baseURI, "2"));
-        } else if (level == 3) {
-            return string(abi.encodePacked(baseURI, "3"));
-        } else {
-            return "";
-        }
+        string memory part0 = '{"name":"Bnomial Badges",';
+        string
+            memory part1 = '"description":"This NFT represents an on-chain proof of the owners achievements on Bnomial",';
+        string memory part2 = '"image":"';
+        string memory part3 = _baseURI();
+        string memory part4 = 'nft.png",';
+        string memory part5 = '"animation_url":"';
+        string memory part6 = _baseURI();
+        string memory part7 = "nft.html?level=";
+        string memory part8 = Strings.toString(level);
+        string memory part9 = '"}';
+
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        part0,
+                        part1,
+                        part2,
+                        part3,
+                        part4,
+                        part5,
+                        part6,
+                        part7,
+                        part8,
+                        part9
+                    )
+                )
+            )
+        );
+        return string(abi.encodePacked("data:application/json;base64,", json));
     }
 }
