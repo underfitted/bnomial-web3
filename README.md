@@ -67,4 +67,4 @@ npm run verify:mumbai -- <smart contract address>
 
 ## Deployed contract for testing
 
-The current contract is deployed on the Mumbai testnet here: [0x167C29c76Fcf0ac7EF29FccfaB25a763fEEb4707](https://mumbai.polygonscan.com/address/0x167C29c76Fcf0ac7EF29FccfaB25a763fEEb4707)
+The current contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x35b5147E74993fD8B77c859d5489A22BFB21e015)
