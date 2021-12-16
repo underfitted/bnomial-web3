@@ -95,11 +95,12 @@ describe("BnomialNFT", () => {
 
     it("should return a JSON metadata", async () => {
         const metadataJson =
-            '{"name":"Bnomial Badges","description":"This NFT represents an on-chain proof of the owners achievements on Bnomial","image":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.png","animation_url":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.html?badges=2"}';
+            '{"name":"Bnomial Badges","description":"This NFT represents an on-chain proof of the owners achievements on Bnomial","image":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.png","animation_url":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.html?badges=2,20,"}';
         const expectedMetadata = "data:application/json;base64," + Buffer.from(metadataJson).toString("base64");
 
-        // Mint a badge
+        // Mint a badge and add another one
         await contract.mint(addr1.address, 2);
+        await contract.addBadge(addr1.address, 20);
 
         // Expect the returned metadata to be correct
         expect(await contract.tokenURI(1)).to.equal(expectedMetadata);

@@ -62,7 +62,7 @@ contract BnomialNFT is ERC721, Ownable {
         string memory badgesString = "";
         for (uint256 i = 0; i < badges.length; i++) {
             badgesString = string(
-                abi.encodePacked(badgesString, Strings.toString(badges[i]))
+                abi.encodePacked(badgesString, Strings.toString(badges[i]), ",")
             );
         }
 
