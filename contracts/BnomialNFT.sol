@@ -12,32 +12,32 @@ contract BnomialNFT is ERC721, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    mapping(address => uint256) private _levels;
+    mapping(address => uint256[]) private _badges;
 
     constructor() ERC721("Bnomial Achievement Badge", "BNOMIAL") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmUE45oBmtMweg6skYBj21navRCgPs29q6p9oSmeYMAUqt/";
+        return "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
     }
 
     function totalSupply() public view returns (uint256) {
         return _tokenIdCounter.current();
     }
 
-    function mintBadge(address to, uint256 level) external onlyOwner {
+    function mint(address to, uint256 badge) external onlyOwner {
         require(balanceOf(to) == 0, "Only one token per wallet allowed");
 
         _tokenIdCounter.increment();
         _safeMint(to, _tokenIdCounter.current());
-        _levels[to] = level;
+        addBadge(to, badge);
     }
 
-    function setLevel(address to, uint256 level) external onlyOwner {
-        _levels[to] = level;
+    function addBadge(address owner, uint256 badge) public onlyOwner {
+        _badges[owner].push(badge);
     }
 
-    function getLevel(address to) public view returns (uint256) {
-        return _levels[to];
+    function getBadges(address owner) public view returns (uint256[] memory) {
+        return _badges[owner];
     }
 
     function tokenURI(uint256 tokenId)
@@ -53,7 +53,14 @@ contract BnomialNFT is ERC721, Ownable {
         );
 
         address owner = ownerOf(tokenId);
-        uint256 level = _levels[owner];
+        uint256[] memory badges = _badges[owner];
+
+        string memory badgesString = "";
+        for (uint256 i = 0; i < badges.length; i++) {
+            badgesString = string(
+                abi.encodePacked(badgesString, Strings.toString(badges[i]), ",")
+            );
+        }
 
         string memory part0 = '{"name":"Bnomial Badges",';
         string
@@ -63,8 +70,8 @@ contract BnomialNFT is ERC721, Ownable {
         string memory part4 = 'nft.png",';
         string memory part5 = '"animation_url":"';
         string memory part6 = _baseURI();
-        string memory part7 = "nft.html?level=";
-        string memory part8 = Strings.toString(level);
+        string memory part7 = "nft.html?badges=";
+        string memory part8 = badgesString;
         string memory part9 = '"}';
 
         string memory json = Base64.encode(
