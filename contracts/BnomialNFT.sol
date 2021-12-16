@@ -93,6 +93,6 @@ contract BnomialNFT is ERC721, Ownable {
         address,
         uint256
     ) internal pure override {
-        require(!true, "ERC721: token transfer disabled");
+        revert("ERC721: token transfer disabled");
     }
 }
