@@ -36,10 +36,6 @@ contract BnomialNFT is ERC721, Ownable {
         _badges[owner].push(badge);
     }
 
-    // function getBadge(address to) public view returns (uint256) {
-    //     return _levels[to];
-    // }
-
     function getBadges(address owner) public view returns (uint256[] memory) {
         return _badges[owner];
     }
