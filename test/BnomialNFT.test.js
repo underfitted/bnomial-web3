@@ -120,4 +120,14 @@ describe("BnomialNFT", () => {
             "VM Exception while processing transaction: reverted with reason string 'Only one token per wallet allowed'"
         );
     });
+
+    it("should block nft transfer", async () => {
+        // Minting one badge for owner wallet
+        await contract.mintBadge(owner.address, 1);
+
+        // transfer nft from owner wallet should fail
+        await expect(contract.transferFrom(owner.address,addr1.address, 1)).to.be.revertedWith(
+            "ERC721: token transfer disabled"
+        );
+    });
 });
