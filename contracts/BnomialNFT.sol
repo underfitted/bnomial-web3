@@ -88,8 +88,7 @@ contract BnomialNFT is ERC721, Ownable {
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
     
-    function _transfer(address from, address to, uint256 tokenId) internal override {
+    function _transfer(address from, address to, uint256 tokenId) internal pure override {
       require(!true, "ERC721: token transfer disabled");
-      super._transfer(from, to, tokenId);
     }
 }
