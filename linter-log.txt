@@ -1,0 +1,20 @@
+
+> Underfitted-Membership-NFT@0.1.0 lint /home/asep/Documents/underfitted/final/bnomial-web3
+> solhint --max-warnings 0 "contracts/**/*.sol"
+
+
+contracts/BnomialNFT.sol
+  67:2  error  Line length must be no more than 120 but current length is 122  max-line-length
+
+✖ 1 problem (1 error, 0 warnings)
+
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! Underfitted-Membership-NFT@0.1.0 lint: `solhint --max-warnings 0 "contracts/**/*.sol"`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the Underfitted-Membership-NFT@0.1.0 lint script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/asep/.npm/_logs/2021-12-18T15_02_16_387Z-debug.log
