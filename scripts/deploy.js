@@ -5,12 +5,10 @@ async function main() {
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
     const BnomialNFTContract = await ethers.getContractFactory("BnomialNFT");
-    const NFTcontract = await BnomialNFTContract.deploy();
-    console.log("NFTcontract Contract address:", NFTcontract.address);
 
-    const BinomialToken1Contract = await ethers.getContractFactory("BinomialToken1");
-    const BinomialToken1deployed = await BinomialToken1Contract.deploy();
-    console.log("BinomialToken1deployed Contract address:", BinomialToken1deployed.address);
+    const contract = await BnomialNFTContract.deploy();
+
+    console.log("Contract address:", contract.address);
 }
 
 main()

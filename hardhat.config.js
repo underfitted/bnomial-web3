@@ -7,10 +7,7 @@ require("dotenv").config();
 const { MUMBAI_API_URL, POLYGON_API_URL, PRIVATE_KEY, POLYSCAN_KEY } = process.env;
 
 module.exports = {
-    solidity: "0.8.10",  
-    mocha: {
-    timeout: 40000
-    },
+    solidity: "0.8.2",
     networks: {
         hardhat: {},
         mumbai: {

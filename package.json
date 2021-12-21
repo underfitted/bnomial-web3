@@ -1,5 +1,5 @@
 {
-    "name": "underfitted-membership-nft",
+    "name": "Underfitted Membership NFT",
     "version": "0.1.0",
     "description": "Smart contract for the Underfitted Membership NFT token",
     "scripts": {
@@ -21,7 +21,7 @@
         "chai": "^4.3.4",
         "ethereum-waffle": "^3.4.0",
         "ethers": "^5.5.1",
-        "hardhat": "^2.8.0",
+        "hardhat": "^2.6.8",
         "hardhat-gas-reporter": "^1.0.4",
         "solidity-coverage": "^0.7.17"
     },
