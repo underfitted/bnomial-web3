@@ -1,0 +1,29 @@
+
+> Underfitted-Membership-NFT@0.1.0 lint /home/asep/Documents/underfitted/final/bnomial-web3
+> solhint --max-warnings 0 "contracts/**/*.sol"
+
+
+contracts/Base64.sol
+   2:1   error    Compiler version ^0.8.2 does not satisfy the ^0.5.8 semver requirement  compiler-version
+  24:9   warning  Avoid to use inline assembly. It is acceptable only in rare cases       no-inline-assembly
+  30:26  warning  Code contains empty blocks                                              no-empty-blocks
+
+contracts/BnomialNFT.sol
+   2:1   error    Compiler version ^0.8.2 does not satisfy the ^0.5.8 semver requirement                             compiler-version
+  17:5   warning  Explicitly mark visibility in function (Set ignoreConstructors to true if using solidity >=0.7.0)  func-visibility
+  17:66  warning  Code contains empty blocks                                                                         no-empty-blocks
+  28:9   warning  Error message for require is too long                                                              reason-string
+  50:9   warning  Error message for require is too long                                                              reason-string
+
+✖ 8 problems (2 errors, 6 warnings)
+
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! Underfitted-Membership-NFT@0.1.0 lint: `solhint --max-warnings 0 "contracts/**/*.sol"`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the Underfitted-Membership-NFT@0.1.0 lint script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/asep/.npm/_logs/2021-12-21T16_30_56_959Z-debug.log
