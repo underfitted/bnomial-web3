@@ -4,9 +4,9 @@ const { ethers } = require("hardhat");
 
 
 describe("BinomialToken1", () => {
-    let INITIAL_SUPPLY =  BigNumber.from(100 * 10 * 100);
-    const NAME = "Binomial Test Token";
-    const SYMBOL = "BNT1";
+    let INITIAL_SUPPLY =  BigNumber.from(0);
+    const NAME = "Underfitted Binomial Token";
+    const SYMBOL = "BNT";
     
     let contract;
     let owner;

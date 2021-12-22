@@ -7,10 +7,6 @@ async function main() {
     const BnomialNFTContract = await ethers.getContractFactory("BnomialNFT");
     const NFTcontract = await BnomialNFTContract.deploy();
     console.log("NFTcontract Contract address:", NFTcontract.address);
-
-    const BinomialToken1Contract = await ethers.getContractFactory("BinomialToken1");
-    const BinomialToken1deployed = await BinomialToken1Contract.deploy();
-    console.log("BinomialToken1deployed Contract address:", BinomialToken1deployed.address);
 }
 
 main()
