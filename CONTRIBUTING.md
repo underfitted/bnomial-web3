@@ -25,10 +25,11 @@ In order to be able to work on the code without forking the repo, we can add you
 Follow these guidelines to ensure that we always have a good quality of the codebase and that your changes can be merged quickly to `main`.
 
 1. **Create a Pull Request for each change.** It is fine to solve an issue in a single or multiple Pull Requests. Clearly explain the changes in the description.
-2. **Link the PR to the issue you are wokring on.** You can also put `Solves: #<issue number>` in the description to close the issue when the PR is merged.
-3. **Code coverage should be 100%.** Make sure that all new code is covered by tests and the code coverage is 100% on all criteria (lines, branches, etc).
-4. **All CI tests pass.** Make sure that all CI tests pass - you will not be allowed to merge otherwise.
-5. **Document changes.** If you change some of the `npm run` commands in `package.json` or anything else in the process, make sure it is documented in the [README](./README.md).
-6. **Deploy smart contract to testnet.** If you make changes to the smart contracts, deploy them to the testnet and test the functionality.
-7. **Document deployed smart contract address.** If you make changes to the smart contracts, document the new address of the deplyed smart contract in the [README](./README.md#deployed-contract-for-testing)
-8. **Ask for a review.** After you've done all of the above, ask for a review by adding people to the Reviewers list or asking on [Discord](https://discord.gg/Fqf5uvj3NG).
+2. **Write meaningful commit messages.** Try to write meaningful git commit messages and keep the git history clean. Every commit message should have a short description of the change in the first line and an optional detailed description in the rest of the message.
+3. **Link the PR to the issue you are wokring on.** You can also put `Resolves: #<issue number>` in the description to close the issue when the PR is merged.
+4. **Code coverage should be 100%.** Make sure that all new code is covered by tests and the code coverage is 100% on all criteria (lines, branches, etc).
+5. **All CI tests pass.** Make sure that all CI tests pass - you will not be allowed to merge otherwise.
+6. **Document changes.** If you change some of the `npm run` commands in `package.json` or anything else in the process, make sure it is documented in the [README](./README.md).
+7. **Deploy smart contract to testnet.** If you make changes to the smart contracts, deploy them to the testnet and test the functionality.
+8. **Document deployed smart contract address.** If you make changes to the smart contracts, document the new address of the deplyed smart contract in the [README](./README.md#deployed-contract-for-testing)
+9. **Ask for a review.** After you've done all of the above, ask for a review by adding people to the Reviewers list or asking on [Discord](https://discord.gg/Fqf5uvj3NG).
