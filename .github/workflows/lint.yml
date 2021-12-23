@@ -16,5 +16,3 @@ jobs:
         if [ $? -ne 0 ]; then
            echo "##vso[task.setvariable variable=linterLog]$(cat linter-log.txt | sed '1,/> eslint ./d;/npm ERR!/,$d' | sed '/./,$!d' | sed ':a;N;$!ba;s/\n/%0D%0A/g')"
         fi
-      continueOnError: true
-      displayName: 'Run Linter'
