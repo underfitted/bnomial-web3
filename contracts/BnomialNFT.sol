@@ -62,17 +62,17 @@ contract BnomialNFT is ERC721, Ownable {
             );
         }
 
-        string memory part0 = "{\"name\":\"Bnomial Badges\",";
+        string memory part0 = '{"name":"Bnomial Badges",';
         string
-            memory part1 = "\"description\":\"This NFT represents an on-chain proof of the owners achievements on Bnomial\",";
-        string memory part2 = "\"image\":\"";
+            memory part1 = '"description":"This NFT represents an on-chain proof of the owners achievements on Bnomial",';
+        string memory part2 = '"image":"';
         string memory part3 = _baseURI();
-        string memory part4 = "nft.png\",";
-        string memory part5 = "\"animation_url\":\"";
+        string memory part4 = 'nft.png",';
+        string memory part5 = '"animation_url":"';
         string memory part6 = _baseURI();
         string memory part7 = "nft.html?badges=";
         string memory part8 = badgesString;
-        string memory part9 = "\"}";
+        string memory part9 = '"}';
 
         string memory json = Base64.encode(
             bytes(
