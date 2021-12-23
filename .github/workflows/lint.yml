@@ -14,4 +14,3 @@ jobs:
     - name: Analysing the code with lint
       run: |
         npm run lint
-        continue-on-error: true
