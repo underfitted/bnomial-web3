@@ -1,13 +1,13 @@
-require("@nomiclabs/hardhat-waffle");
-require("@nomiclabs/hardhat-etherscan");
-require("hardhat-gas-reporter");
-require("solidity-coverage");
-require("dotenv").config();
+require('@nomiclabs/hardhat-waffle')
+require('@nomiclabs/hardhat-etherscan')
+require('hardhat-gas-reporter')
+require('solidity-coverage')
+require('dotenv').config()
 
-const { MUMBAI_API_URL, POLYGON_API_URL, PRIVATE_KEY, POLYSCAN_KEY } = process.env;
+const { MUMBAI_API_URL, POLYGON_API_URL, PRIVATE_KEY, POLYSCAN_KEY } = process.env
 
 module.exports = {
-    solidity: "0.8.2",
+    solidity: '0.8.2',
     networks: {
         hardhat: {},
         mumbai: {
@@ -25,4 +25,4 @@ module.exports = {
     gasReporter: {
         enabled: process.env.REPORT_GAS ? true : false,
     },
-};
+}
