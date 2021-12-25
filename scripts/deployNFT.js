@@ -5,10 +5,8 @@ async function main() {
     console.log("Account balance:", (await deployer.getBalance()).toString());
 
     const BnomialNFTContract = await ethers.getContractFactory("BnomialNFT");
-
-    const contract = await BnomialNFTContract.deploy();
-
-    console.log("Contract address:", contract.address);
+    const NFTcontract = await BnomialNFTContract.deploy();
+    console.log("NFTcontract Contract address:", NFTcontract.address);
 }
 
 main()
