@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 
-contract BinomialToken1 is ERC20, ERC20Burnable, Pausable, Ownable {
+contract BnomialToken is ERC20, ERC20Burnable, Pausable, Ownable {
     
     
-    constructor() ERC20("Underfitted Binomial Token", "BNT") {      
+    constructor() ERC20("Bnomial Token", "BNO") {      
        
     }
 
@@ -25,6 +25,9 @@ contract BinomialToken1 is ERC20, ERC20Burnable, Pausable, Ownable {
     function mint(address to, uint256 amount) public onlyOwner {
         super._mint(to, amount);        
     }
+
+    
+   
 
     function _beforeTokenTransfer(address from, address to, uint256 amount)
         internal
@@ -42,11 +45,5 @@ contract BinomialToken1 is ERC20, ERC20Burnable, Pausable, Ownable {
     {
         super._afterTokenTransfer(from, to, amount);
     }
-
-    function _burn(address account, uint256 amount)
-        internal
-        override(ERC20)
-    {
-        super._burn(account, amount);
-    }
+   
 }
