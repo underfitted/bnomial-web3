@@ -6,7 +6,7 @@ defaults:
 
 on:
   push:
-    branches: [ main, setup_ci_for_sc_verification ]
+    branches: [ main ]
     
   pull_request:
     branches: [ main ]
