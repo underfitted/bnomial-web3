@@ -56,7 +56,13 @@ npm run gas
 To deploy the smart contract on the Mumbai test chain (Polygon):
 
 ```
-npm run deploy:mumbai
+npm run deploy:token:mumbai
+```
+
+To deploy the NFT on the Mumbai test chain (Polygon):
+
+```
+npm run deploy:nft:mumbai
 ```
 
 To verify the smart contract:
@@ -67,4 +73,7 @@ npm run verify:mumbai -- <smart contract address>
 
 ## Deployed contract for testing
 
-The current contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x35b5147E74993fD8B77c859d5489A22BFB21e015)
+The current NFT contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x35b5147E74993fD8B77c859d5489A22BFB21e015)
+
+The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
+

@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./Base64.sol";
+import "hardhat/console.sol";
 
 contract BnomialNFT is ERC721, Ownable {
     using Counters for Counters.Counter;
@@ -24,12 +25,16 @@ contract BnomialNFT is ERC721, Ownable {
         return _tokenIdCounter.current();
     }
 
-    function mint(address to, uint256 badge) external onlyOwner {
+    function mint(address to) external {
         require(balanceOf(to) == 0, "Only one token per wallet allowed");
+        require(_badges[to].length > 0, "At least one achievement is needed");
+        require(msg.sender == owner() || msg.sender == to, "Only contract's owner or token's owner are allowed to mint");
+        _tokenIdCounter.increment();      
+        _safeMint(to, _tokenIdCounter.current());       
+    }
 
-        _tokenIdCounter.increment();
-        _safeMint(to, _tokenIdCounter.current());
-        addBadge(to, badge);
+    function canMint(address owner) public view returns (bool) {
+        return (_badges[owner].length > 0);
     }
 
     function addBadge(address owner, uint256 badge) public onlyOwner {
