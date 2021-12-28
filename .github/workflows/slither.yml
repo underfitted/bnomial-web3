@@ -2,7 +2,7 @@ name: Static-Analysis
 
 on:
   push:
-    branches: [ main, setup_ci_for_sc_verification ]
+    branches: [ main ]
     paths:
       - 'contracts/**'
       - '.github/workflows/slither.yml'

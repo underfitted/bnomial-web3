@@ -1,5 +1,5 @@
 {
-    "name": "Underfitted-Membership-NFT",
+    "name": "underfitted-membership-nft",
     "version": "0.1.0",
     "description": "Smart contract for the Underfitted Membership NFT token",
     "scripts": {
@@ -7,11 +7,12 @@
         "test": "hardhat test",
         "gas": "REPORT_GAS=1 hardhat test",
         "coverage": "hardhat coverage",
-        "deploy:polygon": "npx hardhat run scripts/deploy.js --network polygon",
-        "deploy:mumbai": "npx hardhat run scripts/deploy.js --network mumbai",
+        "deploy:nft:polygon": "npx hardhat run scripts/deployNFT.js --network polygon",
+        "deploy:nft:mumbai": "npx hardhat run scripts/deployNFT.js --network mumbai",
+        "deploy:token:polygon": "npx hardhat run scripts/deployToken.js --network polygon",
+        "deploy:token:mumbai": "npx hardhat run scripts/deployToken.js --network mumbai",
         "verify:polygon": "npx hardhat verify --network polygon",
-        "verify:mumbai": "npx hardhat verify --network mumbai",
-        "lint": "solhint --max-warnings 0 'contracts/**/*.sol'"
+        "verify:mumbai": "npx hardhat verify --network mumbai"
     },
     "author": "Underfitted Social Club",
     "license": "MIT",
@@ -22,9 +23,8 @@
         "chai": "^4.3.4",
         "ethereum-waffle": "^3.4.0",
         "ethers": "^5.5.1",
-        "hardhat": "^2.8.0",
+        "hardhat": "^2.6.8",
         "hardhat-gas-reporter": "^1.0.4",
-        "solhint": "^3.3.6",
         "solidity-coverage": "^0.7.17"
     },
     "dependencies": {
