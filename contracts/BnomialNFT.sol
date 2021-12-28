@@ -28,12 +28,13 @@ contract BnomialNFT is ERC721, Ownable {
     function mint(address to) external {
         require(balanceOf(to) == 0, "Only one token per wallet allowed");
         require(_badges[to].length > 0, "At least one achievement is needed");
+        require(msg.sender == owner() || msg.sender == to, "Only contract's owner or token's owner are allowed to mint");
         _tokenIdCounter.increment();      
         _safeMint(to, _tokenIdCounter.current());       
     }
 
     function canMint(address owner) public view returns (bool) {
-        return (_badges[owner].length > 0) ? true : false;
+        return (_badges[owner].length > 0);
     }
 
     function addBadge(address owner, uint256 badge) public onlyOwner {
