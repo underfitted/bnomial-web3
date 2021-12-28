@@ -6,36 +6,58 @@ describe("BnomialNFT", () => {
     let contract;
     let owner;
     let addr1;
+    let addr2;
 
     beforeEach(async function () {
         BnomialNFTContract = await ethers.getContractFactory("BnomialNFT");
-        [owner, addr1] = await ethers.getSigners();
+        [owner, addr1, addr2] = await ethers.getSigners();
 
         contract = await BnomialNFTContract.deploy();
-    });
+    });    
 
-    it("should mint a badge", async () => {
-        // Mint a badge
-        await contract.mint(addr1.address, 1);
+    it("should mint the NFT only after achieve a badge. (Badge's owner)", async () => {   
+        // Add a badge
+        await contract.addBadge(addr1.address, 1);
+        // Mint the NFT 
+        await contract.connect(addr1).mint(addr1.address);
 
         expect(await contract.totalSupply()).to.equal(1);
         expect(await contract.balanceOf(addr1.address)).to.equal(1);
-        expect(await contract.ownerOf(1)).to.equal(addr1.address);
-    });
+        expect(await contract.ownerOf(1)).to.equal(addr1.address); 
+    });    
 
-    it("should allow only owner to mint a badge", async () => {
-        // Expect minting from another wallet to fail
-        await expect(contract.connect(addr1).mint(addr1.address, 1)).to.be.revertedWith(
-            "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+    it("should mint the NFT only after achieve a badge. (Contract's owner)", async () => {    
+        // Add a badge
+        await contract.addBadge(addr1.address, 1);
+        // Mint the NFT 
+        await contract.mint(addr1.address);
+
+        expect(await contract.totalSupply()).to.equal(1);
+        expect(await contract.balanceOf(addr1.address)).to.equal(1);
+        expect(await contract.ownerOf(1)).to.equal(addr1.address); 
+    });  
+    
+    it("should fail to mint due to the owner's wallet doesn't have a badge", async () => {            
+        // Minting a token for the owner's wallet should fail 
+        // due to doesn't have a badge
+        await expect(contract.mint(addr1.address)).to.be.revertedWith(
+            "VM Exception while processing transaction: reverted with reason string 'At least one achievement is needed'"
         );
+    });   
 
-        // Expect minting from owner to succeed
-        await contract.mint(addr1.address, 1);
-    });
+    it("should fail to mint due to the address wallet isn't the badge's owner or contract's owner", async () => {
+        // Add a badge
+        await contract.addBadge(addr1.address, 1);
+        await expect(contract.connect(addr2).mint(addr1.address)).to.be.revertedWith(
+            "VM Exception while processing transaction: reverted with reason string 'Only contract's owner or token's owner are allowed to mint'"
+        );
+    });   
 
     it("should start counting tokens from 1", async () => {
+        // Add a badge
+         await contract.addBadge(addr1.address, 1);
         // Mint a badge
-        await contract.mint(addr1.address, 1);
+        await contract.mint(addr1.address);
 
         // Expect getting the owner of token 0 to fail
         await expect(contract.ownerOf(0)).to.be.revertedWith(
@@ -44,14 +66,7 @@ describe("BnomialNFT", () => {
 
         // Expect getting the owner of token 1 to not fail
         await expect(contract.ownerOf(1)).to.not.be.reverted;
-    });
-
-    it("should set the badge when minting", async () => {
-        // Mint a badge
-        await contract.mint(addr1.address, 1);
-
-        expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1)]);
-    });
+    });   
 
     it("should get badges", async () => {
         // Get the badges for unassigned wallet
@@ -59,8 +74,11 @@ describe("BnomialNFT", () => {
     });
 
     it("should add badge", async () => {
+        // Add a new badge
+        await contract.addBadge(addr1.address, 1);
+
         // Mint a badge
-        await contract.mint(addr1.address, 1);
+        await contract.mint(addr1.address);
 
         // Expect the badges to contain only 1
         expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1)]);
@@ -70,7 +88,7 @@ describe("BnomialNFT", () => {
 
         // Expect the badges to be [1, 2]
         expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1), BigNumber.from(2)]);
-    });
+    });    
 
     it("should add badge for a wallet that has no badges", async () => {
         // Expect the badges to be empty
@@ -99,7 +117,8 @@ describe("BnomialNFT", () => {
         const expectedMetadata = "data:application/json;base64," + Buffer.from(metadataJson).toString("base64");
 
         // Mint a badge and add another one
-        await contract.mint(addr1.address, 2);
+        await contract.addBadge(addr1.address, 2);
+        await contract.mint(addr1.address);
         await contract.addBadge(addr1.address, 20);
 
         // Expect the returned metadata to be correct
@@ -114,21 +133,32 @@ describe("BnomialNFT", () => {
 
     it("should allow only one token per non-owner wallet", async () => {
         // Minting one badge should work
-        await contract.mint(addr1.address, 2);
+        await contract.addBadge(addr1.address, 2);
+        await contract.mint(addr1.address);
 
         // Minting another tokenfor the same wallet should fail
-        await expect(contract.mint(addr1.address, 3)).to.be.revertedWith(
+        await expect(contract.mint(addr1.address)).to.be.revertedWith(
             "VM Exception while processing transaction: reverted with reason string 'Only one token per wallet allowed'"
         );
     });
 
     it("should block nft transfer", async () => {
         // Minting one badge for owner wallet
-        await contract.mint(owner.address, 1);
+        await contract.addBadge(owner.address, 1);
+        await contract.mint(owner.address);
 
         // transfer nft from owner wallet should fail
         await expect(contract.transferFrom(owner.address, addr1.address, 1)).to.be.revertedWith(
             "ERC721: token transfer disabled"
         );
-    });
+    });    
+
+    it("should returns false when the wallet doesn't have a badge", async () => {     
+        expect(await contract.canMint(addr1.address)).to.equal(false);
+    }); 
+    
+    it("should returns true when the wallet has a badge", async () => {     
+        await contract.addBadge(addr1.address, 1);
+        expect(await contract.canMint(addr1.address)).to.equal(true);
+    }); 
 });
