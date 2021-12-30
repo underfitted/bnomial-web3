@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "Running slither"
           #slither . --ignore-compile --filter-paths "node_modules" --disable-color --print human-summary >>.github/slither-output/slither_report.txt 2>&1 || true
-          slither . --json-types compilations,console,detectors,printers,list-detectors,list-printers --exclude-dependencies --compile-force-framework hardhat >>.github/slither-output/slither_report.txt 2>&1 || true
+          slither . --json-types compilations,console,detectors,printers,list-detectors,list-printers --exclude-dependencies --exclude-informational --compile-force-framework hardhat >>.github/slither-output/slither_report.txt 2>&1 || true
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
         with:
