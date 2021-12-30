@@ -21,7 +21,7 @@ contract BnomialNFT is ERC721, Ownable {
         return "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
     }
 
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() external view returns (uint256) {
         return _tokenIdCounter.current();
     }
 
@@ -33,16 +33,16 @@ contract BnomialNFT is ERC721, Ownable {
         _safeMint(to, _tokenIdCounter.current());       
     }
 
-    function canMint(address owner) public view returns (bool) {
-        return (_badges[owner].length > 0);
+    function canMint(address owner_) external view returns (bool) {
+        return (_badges[owner_].length > 0);
     }
 
-    function addBadge(address owner, uint256 badge) public onlyOwner {
-        _badges[owner].push(badge);
+    function addBadge(address owner_, uint256 badge_) external onlyOwner {
+        _badges[owner_].push(badge_);
     }
 
-    function getBadges(address owner) public view returns (uint256[] memory) {
-        return _badges[owner];
+    function getBadges(address owner_) external view returns (uint256[] memory) {
+        return _badges[owner_];
     }
 
     function tokenURI(uint256 tokenId)
@@ -57,8 +57,8 @@ contract BnomialNFT is ERC721, Ownable {
             "ERC721Metadata: URI query for nonexistent token"
         );
 
-        address owner = ownerOf(tokenId);
-        uint256[] memory badges = _badges[owner];
+        address owner_ = ownerOf(tokenId);
+        uint256[] memory badges = _badges[owner_];
 
         string memory badgesString = "";
         for (uint256 i = 0; i < badges.length; i++) {
