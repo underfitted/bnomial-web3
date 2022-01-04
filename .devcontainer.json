@@ -2,19 +2,8 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/javascript-node
 {
 	"name": "bnomial-web3-dev",
-	// "build": {
-	// 	"context": "..",
-	// 	"dockerfile": "Dockerfile",
-	// 	// Update 'VARIANT' to pick a Node version: 16, 14, 12.
-	// 	// Append -bullseye or -buster to pin to an OS version.
-	// 	// Use -bullseye variants on local arm64/Apple Silicon.
-	// 	"args": { "VARIANT": "16-bullseye", "WRKSPC": "${containerWorkspaceFolder}"}
-	// },
 	
 	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-16-bullseye",
-
-	// Set *default* container specific settings.json values on container create.
-	"settings": {},
 
 	"workspaceMount": "source=${localWorkspaceFolder},target=/underfitted/bnomial-web3,type=bind,consistency=cached",
 	"workspaceFolder": "/underfitted/bnomial-web3",
@@ -23,9 +12,6 @@
 	"extensions": [
 		"juanblanco.solidity"
 	],
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "npm install",

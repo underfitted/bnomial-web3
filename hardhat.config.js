@@ -10,14 +10,15 @@ module.exports = {
     solidity: "0.8.2",
     networks: {
         hardhat: {},
-        mumbai: {
-            url: MUMBAI_API_URL,
-            accounts: [`0x${PRIVATE_KEY}`],
-        },
-        polygon: {
-            url: POLYGON_API_URL,
-            accounts: [`0x${PRIVATE_KEY}`],
-        },
+        // Uncomment according to the network you wanna use
+        // mumbai: {
+        //     url: MUMBAI_API_URL,
+        //     accounts: [`0x${PRIVATE_KEY}`],
+        // },
+        // polygon: {
+        //     url: POLYGON_API_URL,
+        //     accounts: [`0x${PRIVATE_KEY}`],
+        // },
     },
     etherscan: {
         apiKey: POLYSCAN_KEY,
