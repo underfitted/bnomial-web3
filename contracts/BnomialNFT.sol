@@ -28,9 +28,12 @@ contract BnomialNFT is ERC721, Ownable {
     function mint(address to) external {
         require(balanceOf(to) == 0, "Only one token per wallet allowed");
         require(_badges[to].length > 0, "At least one achievement is needed");
-        require(msg.sender == owner() || msg.sender == to, "Only contract's owner or token's owner are allowed to mint");
-        _tokenIdCounter.increment();      
-        _safeMint(to, _tokenIdCounter.current());       
+        require(
+            msg.sender == owner() || msg.sender == to,
+            "Only contract's owner or token's owner are allowed to mint"
+        );
+        _tokenIdCounter.increment();
+        _safeMint(to, _tokenIdCounter.current());
     }
 
     function canMint(address owner_) external view returns (bool) {
@@ -41,17 +44,16 @@ contract BnomialNFT is ERC721, Ownable {
         _badges[owner_].push(badge_);
     }
 
-    function getBadges(address owner_) external view returns (uint256[] memory) {
+    function getBadges(address owner_)
+        external
+        view
+        returns (uint256[] memory)
+    {
         return _badges[owner_];
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
+    // prettier-ignore
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(
             _exists(tokenId),
             "ERC721Metadata: URI query for nonexistent token"

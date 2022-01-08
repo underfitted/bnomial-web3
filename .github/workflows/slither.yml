@@ -49,12 +49,8 @@ jobs:
                   pip install slither-analyzer solc-select
                   solc-select install 0.8.2
                   solc-select use 0.8.2
-            - name: Prepare output
-              run: |
-                  mkdir -p .github/slither-output
             - name: Summary of static ananlysis
               shell: bash
               run: |
                   echo "Running slither"
-                  #slither . --ignore-compile --filter-paths "node_modules" --disable-color --print human-summary >>.github/slither-output/slither_report.txt 2>&1 || true
                   slither . --json-types compilations,console,detectors,printers,list-detectors,list-printers --exclude-dependencies --exclude-informational --compile-force-framework hardhat
