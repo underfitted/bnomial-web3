@@ -14,15 +14,15 @@ contract BnomialToken is ERC20, ERC20Burnable, Pausable, Ownable {
        
     }
 
-    function pause() public onlyOwner {
+    function pause() external onlyOwner {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
+    function mint(address to, uint256 amount) external onlyOwner {
         super._mint(to, amount);        
     }
 

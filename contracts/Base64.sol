@@ -14,7 +14,7 @@ library Base64 {
         if (len == 0) return "";
 
         // multiply by 4/3 rounded up
-        uint256 encodedLen = 4 * ((len + 2) / 3);
+        uint256 encodedLen = (4 * (len + 2)) / 3;
 
         // Add some extra buffer at the end
         bytes memory result = new bytes(encodedLen + 32);
