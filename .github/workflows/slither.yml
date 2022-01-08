@@ -1,73 +1,56 @@
 name: Static-Analysis
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'contracts/**'
-      - '.github/workflows/slither.yml'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'contracts/**'
-      - '.github/workflows/slither.yml'
+    push:
+        branches: [main]
+        paths:
+            - "contracts/**"
+            - ".github/workflows/slither.yml"
+    pull_request:
+        branches: [main]
+        paths:
+            - "contracts/**"
+            - ".github/workflows/slither.yml"
 
 jobs:
-  build:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: [3.6]
+                node-version: [16.x]
 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6]
-        node-version: [16.x]
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Create env file
-        run: |
-          cat << EOF > .env
-          MUMBAI_API_URL=""
-          POLYGON_API_URL=""
-          PRIVATE_KEY="0000000000000000000000000000000000000000000000000000000000000000"
-          POLYSCAN_KEY=""
-          EOF
-      - run: npm install
-      - run: npm run build
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Slither and dependencies
-        run: |
-          sudo snap install solc
-          python -m pip install --upgrade pip
-          pip install slither-analyzer solc-select
-          solc-select install 0.8.2
-          solc-select use 0.8.2
-      - name: Prepare output
-        run: |
-          mkdir -p .github/slither-output
-      - name: Summary of static ananlysis
-        shell: bash
-        run: |
-          echo "Running slither"
-          #slither . --ignore-compile --filter-paths "node_modules" --disable-color --print human-summary >>.github/slither-output/slither_report.txt 2>&1 || true
-          slither . --json-types compilations,console,detectors,printers,list-detectors,list-printers --exclude-dependencies --exclude-informational --compile-force-framework hardhat >>.github/slither-output/slither_report.txt 2>&1 || true
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: slither-report
-          path: .github/slither-output/slither_report.txt
-      - name: Check status
-        shell: bash
-        run: |
-          FALSE_POSITIVE_WARNINGS=5
-          FOUND_WARNINGS=`grep "\d+ result" -Po .github/slither-output/slither_report.txt | sed 's/ result//g'`
-          echo "Slither Analysis $FOUND_WARNINGS issues"
-          if [[ $FOUND_WARNINGS -gt $FALSE_POSITIVE_WARNINGS ]]; then echo "$FOUND_WARNINGS issues exceeds limit" >&2; exit 1; fi
+        steps:
+            - uses: actions/checkout@v2
+            - name: Branch name
+              run: echo running on branch ${GITHUB_REF##*/}
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Create env file
+              run: |
+                  cat << EOF > .env
+                  MUMBAI_API_URL=""
+                  POLYGON_API_URL=""
+                  PRIVATE_KEY="0000000000000000000000000000000000000000000000000000000000000000"
+                  POLYSCAN_KEY=""
+                  EOF
+            - run: npm install
+            - run: npm run build
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v2
+              with:
+                  python-version: ${{ matrix.python-version }}
+            - name: Install Slither and dependencies
+              run: |
+                  sudo snap install solc
+                  python -m pip install --upgrade pip
+                  pip install slither-analyzer solc-select
+                  solc-select install 0.8.2
+                  solc-select use 0.8.2
+            - name: Summary of static ananlysis
+              shell: bash
+              run: |
+                  echo "Running slither"
+                  slither . --exclude-dependencies --exclude-informational --compile-force-framework hardhat
