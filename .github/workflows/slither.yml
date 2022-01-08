@@ -53,4 +53,4 @@ jobs:
               shell: bash
               run: |
                   echo "Running slither"
-                  slither . --exclude-dependencies --exclude-informational --compile-force-framework hardhat
+                  slither . --exclude-dependencies --exclude-informational --compile-force-framework hardhat --filter-paths=contracts/Base64.sol --exclude=external-function
