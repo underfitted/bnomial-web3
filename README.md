@@ -77,8 +77,7 @@ The current NFT contract is deployed on the Mumbai testnet here: [0x35b5147E7499
 
 The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
 
-## Setup CI
-### Setup Slither-Analyzer
+## Setup Slither-Analyzer
 
 Slither is a Solidity static analysis framework written in Python 3. It runs to analyze code vulnerabilities according to security aspects.
 
@@ -87,16 +86,20 @@ Environment
 python 3.6+
 ```
 
-Setup dependencies:
+Create a new virtual environment:
+
 ```
-sudo snap install solc
-python -m pip install --upgrade pip
-pip install slither-analyzer solc-select
-solc-select install 0.8.2
-solc-select use 0.8.2
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-To run slither:
+Install the required Python packages:
+
+```
+pip install -r requiremets.txt
+```
+
+To run slither-analyzer:
 ```
 npm run slither
 ```
