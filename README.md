@@ -109,3 +109,32 @@ npm run verify:mumbai -- <smart contract address>
 The current NFT contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x35b5147E74993fD8B77c859d5489A22BFB21e015)
 
 The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
+
+## Setup Slither-Analyzer
+
+Slither is a Solidity static analysis framework written in Python 3. It runs to analyze code vulnerabilities according to security aspects.
+
+Environment
+
+```
+python 3.6+
+```
+
+Create a new virtual environment:
+
+```
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Install the required Python packages:
+
+```
+pip install -r requirements.txt
+```
+
+To run slither-analyzer:
+
+```
+npm run slither
+```

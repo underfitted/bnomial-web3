@@ -1,0 +1,27 @@
+name: Lint
+defaults:
+  run:
+    # To load bashrc
+    shell: bash -ieo pipefail {0}
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Branch name
+      run: echo running on branch ${GITHUB_REF##*/}
+    - name: Install dependencies
+      run: |
+        npm i -D solhint
+        npx solhint --init
+    - name: Analysing the code with lint
+      run: |
+        npm run lint

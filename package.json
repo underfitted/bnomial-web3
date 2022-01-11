@@ -12,7 +12,9 @@
         "deploy:token:polygon": "npx hardhat run scripts/deployToken.js --network polygon",
         "deploy:token:mumbai": "npx hardhat run scripts/deployToken.js --network mumbai",
         "verify:polygon": "npx hardhat verify --network polygon",
-        "verify:mumbai": "npx hardhat verify --network mumbai"
+        "verify:mumbai": "npx hardhat verify --network mumbai",
+        "lint": "solhint --max-warnings 0 'contracts/**/*.sol'",
+        "slither": "slither . --exclude-dependencies --exclude-informational --compile-force-framework hardhat --filter-paths=contracts/Base64.sol --exclude=external-function"
     },
     "author": "Underfitted Social Club",
     "license": "MIT",
