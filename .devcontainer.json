@@ -1,0 +1,21 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/javascript-node
+{
+	"name": "bnomial-web3-dev",
+	
+	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-16-bullseye",
+
+	"workspaceMount": "source=${localWorkspaceFolder},target=/underfitted/bnomial-web3,type=bind,consistency=cached",
+	"workspaceFolder": "/underfitted/bnomial-web3",
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"juanblanco.solidity"
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "npm install",
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "node"
+}
