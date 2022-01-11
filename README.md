@@ -96,7 +96,7 @@ source .venv/bin/activate
 Install the required Python packages:
 
 ```
-pip install -r requiremets.txt
+pip install -r requirements.txt
 ```
 
 To run slither-analyzer:
