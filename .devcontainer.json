@@ -10,7 +10,8 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"juanblanco.solidity"
+		"juanblanco.solidity",
+		"esbenp.prettier-vscode"
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
