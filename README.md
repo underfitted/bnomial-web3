@@ -60,6 +60,8 @@ To compile it run:
 npm run build
 ```
 
+Detailed description of Bnomial project and some guidelines regarding its set up and development is available in the [official documentation](https://docs.underfitted.io/incubator/bnomial/web3/environment-setup).
+
 ## Test
 
 The tests for the smart contract are in [test/BnomialNFT.test.js](/test/BnomialNFT.test.js).
