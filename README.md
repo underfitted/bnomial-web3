@@ -6,11 +6,11 @@ Smart contracts for [bnomial](https://github.com/underfitted/bnomial).
 
 The main artifacts (files and folders) in the repository are:
 
-- [contracts](contracts/): It contains smart contracts, NFTs and related utility functions for the project;
-- [scripts](scripts/): [Hardhat](https://hardhat.org/) custom scripts;
-- [test](test/): Bnomial test sets;
-- [hardhat.config.js](hardhat.config.js): Main configuration file for Hardhat. You should customize it if you want to deploy
-the contracts in remote networks.
+-   [contracts](contracts/): It contains smart contracts, NFTs and related utility functions for the project;
+-   [scripts](scripts/): [Hardhat](https://hardhat.org/) custom scripts;
+-   [test](test/): Bnomial test sets;
+-   [hardhat.config.js](hardhat.config.js): Main configuration file for Hardhat. You should customize it if you want to deploy
+    the contracts in remote networks.
 
 ## Setup
 
@@ -25,10 +25,10 @@ npm install
 ### VSCode Remote Container
 
 You may use [VSCode Remote Container](https://code.visualstudio.com/docs/remote/containers) if you want to avoid local
-installations. Just install the extension and setup your local Docker as described 
+installations. Just install the [extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) and setup your local Docker as described
 [here](https://code.visualstudio.com/docs/remote/containers#_getting-started).
 
-When running the project in the development container, you may use the embedded vscode terminal to execute the 
+When running the project in the development container, you may use the embedded vscode terminal to execute the
 _deployment workflow_.
 
 > :warning: The container runs all processes and update the files as the internal user _node:node_ (1000:1000).
@@ -36,17 +36,13 @@ _deployment workflow_.
 ## Develop
 
 Smart contracts and NFTs demand an account and a blockchain network to be deployed into. Besides that, it's important to set an
-access provider (e.g., [Alchemy](https://www.alchemy.com/) or [Infura](https://infura.io/)) and a blockchain explorer 
-(e.g. [Polygonscan](https://polygonscan.com/) or [Etherscan](https://etherscan.io/)). Hardhat provides a built-in network to 
+access provider (e.g., [Alchemy](https://www.alchemy.com/) or [Infura](https://infura.io/)) and a blockchain explorer
+(e.g. [Polygonscan](https://polygonscan.com/) or [Etherscan](https://etherscan.io/)). Hardhat provides a built-in network to
 ease local development. When deploying to remote networks, you must:
 
-- Set up [hardhat configuration file](hardhat.config.js) by removing the comments according to the network you want to use;
-- Create an `.env` file and set up the required information for the network (the `POLYGON_API_URL` is not needed if you are 
-just testing on Mumbai). The properties are:
-    - `MUMBAI_API_URL`: Alchemy HTTP URL
-    - `POLYGON_API_URL`: Alchemy HTTP URL
-    - `PRIVATE_KEY` : Deploy wallet private key
-    - `POLYSCAN_KEY` : Polygonscan API key for verification 
+-   Set up [hardhat configuration file](hardhat.config.js) by removing the comments according to the network you want to use;
+-   Create an `.env` file and set up the required information for the network (the `POLYGON_API_URL` is not needed if you are
+    just testing on Mumbai). The properties are: - `MUMBAI_API_URL`: Alchemy HTTP URL - `POLYGON_API_URL`: Alchemy HTTP URL - `PRIVATE_KEY` : Deploy wallet private key - `POLYSCAN_KEY` : Polygonscan API key for verification
 
 Here is an example of `.env`file for deploying a contract in Mumbai Net:
 
@@ -111,4 +107,3 @@ npm run verify:mumbai -- <smart contract address>
 The current NFT contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x35b5147E74993fD8B77c859d5489A22BFB21e015)
 
 The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
-
