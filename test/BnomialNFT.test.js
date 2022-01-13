@@ -15,6 +15,22 @@ describe("BnomialNFT", () => {
         contract = await BnomialNFTContract.deploy()
     })
 
+    it("should change the base URI", async () => {
+        // Change the base URI and check
+        await contract.setBaseURI("ipfs://testuri")
+        expect(await contract.baseURI()).to.equal("ipfs://testuri")
+    })
+
+    it("should allow only owner to set the base URI", async () => {
+        // Expect setting the URI from another wallet to fail
+        await expect(contract.connect(addr1).setBaseURI("ipfs://testuri")).to.be.revertedWith(
+            "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+        )
+
+        // Expect setting the URI from owner to succeed
+        await expect(contract.setBaseURI("ipfs://testuri")).to.not.be.reverted
+    })
+
     it("should allow mint only if the address has a badge assigned", async () => {
         // Add a badge and mint
         await contract.addBadge(addr1.address, 1)

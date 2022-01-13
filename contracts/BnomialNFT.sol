@@ -17,6 +17,7 @@ import "./Base64.sol";
 contract BnomialNFT is ERC721, Ownable {
     using Counters for Counters.Counter;
 
+    string public baseURI = "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
     Counters.Counter private _tokenIdCounter;
     mapping(address => uint256[]) private _badges;
 
@@ -26,11 +27,19 @@ contract BnomialNFT is ERC721, Ownable {
     constructor() ERC721("Bnomial Achievement Badge", "BNOMIAL") {}
 
     /**
-     * @dev Defines the base URI for the tokens
+     * @dev Get the base URI for the tokens
      * @return string representing the base URI
      */
-    function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
+    }
+
+    /**
+     * @dev Set the base URI for the tokens
+     * @param uri new base URI
+     */
+    function setBaseURI(string memory uri) external onlyOwner {
+        baseURI = uri;
     }
 
     /**
