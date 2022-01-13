@@ -3,10 +3,6 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
 describe("BnomialToken", () => {
-    let INITIAL_SUPPLY = BigNumber.from(0)
-    const NAME = "Bnomial Token"
-    const SYMBOL = "BNO"
-
     let contract
     let owner
     let addr1
@@ -17,26 +13,17 @@ describe("BnomialToken", () => {
         contract = await BnomialTokenContract.deploy()
     })
 
-    it("has a name", async function () {
-        console.log(contract.name())
-        expect(await contract.name()).to.be.equal(NAME)
-    })
-
-    it("has a symbol", async function () {
-        expect(await contract.symbol()).to.be.equal(SYMBOL)
-    })
-
-    it("assigns the initial total supply to the creator", async function () {
-        balance_owner = await contract.balanceOf(owner.address)
-        expect(balance_owner).to.equal(INITIAL_SUPPLY.toNumber())
-    })
-
     it("should mint a token", async () => {
-        await contract.mint(addr1.address, 1)
-        total_supply = await contract.totalSupply()
-        initial_supply = INITIAL_SUPPLY.toNumber() + 1
-        expect(total_supply).to.equal(initial_supply)
-        expect(await contract.balanceOf(addr1.address)).to.equal(1)
+        // Start with no tokens
+        expect(await contract.totalSupply()).to.equal(0)
+
+        // Mint 10 new tokens and check
+        await contract.mint(owner.address, 10)
+        expect(await contract.totalSupply()).to.equal(10)
+
+        // Mint another 100 tokens and check
+        await contract.mint(addr1.address, 100)
+        expect(await contract.totalSupply()).to.equal(110)
     })
 
     it("should allow only owner to mint a token", async () => {
@@ -44,43 +31,22 @@ describe("BnomialToken", () => {
         await expect(contract.connect(addr1).mint(addr1.address, 1)).to.be.revertedWith(
             "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
         )
+
         // Expect minting from owner to succeed
-        await contract.mint(addr1.address, 1)
-    })
-
-    it("should pause the contract", async () => {
-        // Pause the minting
-        await contract.connect(owner).pause()
-
-        // await expect( await contract.mint(addr1.address, 1) ).to.be.reverted;
-        // Expect minting to fail
-        await expect(contract.mint(addr1.address, 1)).to.be.revertedWith(
-            "VM Exception while processing transaction: reverted with reason string 'Pausable: paused'"
-        )
-    })
-
-    it("should unpause the contract", async () => {
-        // Pause and unpause the contract
-        await contract.connect(owner).pause()
-        await contract.connect(owner).unpause()
-
-        // Minting should work
-        await contract.mint(addr1.address, 1)
-        expect(await contract.paused()).to.equal(false)
+        await expect(contract.mint(addr1.address, 1)).to.not.be.reverted
     })
 
     it("should reduce balance after burn", async () => {
-        // Pause and unpause the contract
-        balance_before_mint = await contract.balanceOf(owner.address)
+        // Mint 10 tokens and check balance
+        await contract.mint(owner.address, 10)
+        expect(await contract.balanceOf(owner.address)).to.equal(10)
 
-        // console.log('balance_before_mint ' + JSON.stringify(balance_before_mint.toNumber()))
-        await contract.mint(owner.address, 1)
-        balance_after_mint = await contract.balanceOf(owner.address)
-        // console.log('balance_after_mint: ' + JSON.stringify(balance_after_mint.toNumber()))
+        // Burn 2 tokens and check balance
+        await contract.burn(2)
+        expect(await contract.balanceOf(owner.address)).to.equal(8)
 
-        await contract.burn(1)
-        balance_after_burn = await contract.balanceOf(owner.address)
-        // console.log('balance_after_burn: ' + JSON.stringify(balance_after_burn.toNumber()))
-        expect(balance_before_mint).to.equal(balance_after_burn)
+        // Burn remaining 0 tokens and check balance
+        await contract.burn(8)
+        expect(await contract.balanceOf(owner.address)).to.equal(0)
     })
 })
