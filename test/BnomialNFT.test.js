@@ -160,5 +160,17 @@ describe("BnomialNFT", () => {
     it("should returns true when the wallet has a badge", async () => {     
         await contract.addBadge(addr1.address, 1);
         expect(await contract.canMint(addr1.address)).to.equal(true);
-    }); 
+    });
+    
+    it("should burn the nft", async () => {
+        // Minting one badge for owner wallet
+        balance_before_mint = await contract.balanceOf(owner.address)
+        await contract.addBadge(owner.address, 1);
+        await contract.mint(owner.address);
+        await contract.burn(1);
+        balance_after_burn = await contract.balanceOf(owner.address)
+
+        // minted nft should be buned by now so balance before == balance after burn
+        expect(balance_before_mint).to.equal(balance_after_burn);
+    });
 });
