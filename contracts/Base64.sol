@@ -5,8 +5,7 @@ pragma solidity ^0.8.2;
 /// @notice Provides a function for encoding some bytes in base64
 /// @author Brecht Devos <brecht@loopring.org>
 library Base64 {
-    bytes internal constant TABLE =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    bytes internal constant TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     /// @notice Encodes some bytes to the base64 representation
     function encode(bytes memory data) internal pure returns (string memory) {
@@ -14,7 +13,7 @@ library Base64 {
         if (len == 0) return "";
 
         // multiply by 4/3 rounded up
-        uint256 encodedLen = 4 * ((len + 2) / 3);
+        uint256 encodedLen = (4 * (len + 2)) / 3;
 
         // Add some extra buffer at the end
         bytes memory result = new bytes(encodedLen + 32);
@@ -35,20 +34,11 @@ library Base64 {
 
                 let out := mload(add(tablePtr, and(shr(18, input), 0x3F)))
                 out := shl(8, out)
-                out := add(
-                    out,
-                    and(mload(add(tablePtr, and(shr(12, input), 0x3F))), 0xFF)
-                )
+                out := add(out, and(mload(add(tablePtr, and(shr(12, input), 0x3F))), 0xFF))
                 out := shl(8, out)
-                out := add(
-                    out,
-                    and(mload(add(tablePtr, and(shr(6, input), 0x3F))), 0xFF)
-                )
+                out := add(out, and(mload(add(tablePtr, and(shr(6, input), 0x3F))), 0xFF))
                 out := shl(8, out)
-                out := add(
-                    out,
-                    and(mload(add(tablePtr, and(input, 0x3F))), 0xFF)
-                )
+                out := add(out, and(mload(add(tablePtr, and(input, 0x3F))), 0xFF))
                 out := shl(224, out)
 
                 mstore(resultPtr, out)

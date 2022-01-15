@@ -22,50 +22,42 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
         return "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
     }
 
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() external view returns (uint256) {
         return _tokenIdCounter.current();
     }
 
     function mint(address to) external {
         require(balanceOf(to) == 0, "Only one token per wallet allowed");
         require(_badges[to].length > 0, "At least one achievement is needed");
-        require(msg.sender == owner() || msg.sender == to, "Only contract's owner or token's owner are allowed to mint");
-        _tokenIdCounter.increment();      
-        _safeMint(to, _tokenIdCounter.current());       
-    }
-
-    function canMint(address owner) public view returns (bool) {
-        return (_badges[owner].length > 0);
-    }
-
-    function addBadge(address owner, uint256 badge) public onlyOwner {
-        _badges[owner].push(badge);
-    }
-
-    function getBadges(address owner) public view returns (uint256[] memory) {
-        return _badges[owner];
-    }
-
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        virtual
-        override
-        returns (string memory)
-    {
         require(
-            _exists(tokenId),
-            "ERC721Metadata: URI query for nonexistent token"
+            msg.sender == owner() || msg.sender == to,
+            "Only contract's owner or token's owner are allowed to mint"
         );
+        _tokenIdCounter.increment();
+        _safeMint(to, _tokenIdCounter.current());
+    }
 
-        address owner = ownerOf(tokenId);
-        uint256[] memory badges = _badges[owner];
+    function canMint(address owner_) external view returns (bool) {
+        return (_badges[owner_].length > 0);
+    }
+
+    function addBadge(address owner_, uint256 badge_) external onlyOwner {
+        _badges[owner_].push(badge_);
+    }
+
+    function getBadges(address owner_) external view returns (uint256[] memory) {
+        return _badges[owner_];
+    }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        address owner_ = ownerOf(tokenId);
+        uint256[] memory badges = _badges[owner_];
 
         string memory badgesString = "";
         for (uint256 i = 0; i < badges.length; i++) {
-            badgesString = string(
-                abi.encodePacked(badgesString, Strings.toString(badges[i]), ",")
-            );
+            badgesString = string(abi.encodePacked(badgesString, Strings.toString(badges[i]), ","));
         }
 
         string memory part0 = '{"name":"Bnomial Badges",';
@@ -81,22 +73,7 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
         string memory part9 = '"}';
 
         string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        part0,
-                        part1,
-                        part2,
-                        part3,
-                        part4,
-                        part5,
-                        part6,
-                        part7,
-                        part8,
-                        part9
-                    )
-                )
-            )
+            bytes(string(abi.encodePacked(part0, part1, part2, part3, part4, part5, part6, part7, part8, part9)))
         );
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
