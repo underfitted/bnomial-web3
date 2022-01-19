@@ -3,60 +3,65 @@ const { expect } = require("chai")
 const { ethers } = require("hardhat")
 
 describe("BnomialNFT", () => {
+    let BnomialNFTContract
     let contract
     let owner
     let addr1
     let addr2
 
-    beforeEach(async function () {
+    beforeEach(async () => {
         BnomialNFTContract = await ethers.getContractFactory("BnomialNFT")
         ;[owner, addr1, addr2] = await ethers.getSigners()
-
         contract = await BnomialNFTContract.deploy()
     })
 
-    it("should mint the NFT only after achieve a badge. (Badge's owner)", async () => {
-        // Add a badge
+    it("should allow mint only if the address has a badge assigned", async () => {
+        // Add a badge and mint
         await contract.addBadge(addr1.address, 1)
-        // Mint the NFT
         await contract.connect(addr1).mint(addr1.address)
 
+        // Expect mint to be successful
         expect(await contract.totalSupply()).to.equal(1)
         expect(await contract.balanceOf(addr1.address)).to.equal(1)
         expect(await contract.ownerOf(1)).to.equal(addr1.address)
     })
 
-    it("should mint the NFT only after achieve a badge. (Contract's owner)", async () => {
-        // Add a badge
+    it("should allow owner to mint for every address that has a badge", async () => {
+        // Add a badge and mint
         await contract.addBadge(addr1.address, 1)
-        // Mint the NFT
         await contract.mint(addr1.address)
 
+        // Expect mint to be successful
         expect(await contract.totalSupply()).to.equal(1)
         expect(await contract.balanceOf(addr1.address)).to.equal(1)
         expect(await contract.ownerOf(1)).to.equal(addr1.address)
     })
 
-    it("should fail to mint due to the owner's wallet doesn't have a badge", async () => {
-        // Minting a token for the owner's wallet should fail
-        // due to doesn't have a badge
+    it("should not allow to mint when address has no badges", async () => {
         await expect(contract.mint(addr1.address)).to.be.revertedWith(
-            "VM Exception while processing transaction: reverted with reason string 'At least one achievement is needed'"
+            "VM Exception while processing transaction: reverted with reason string 'At least one badge is needed'"
         )
     })
 
-    it("should fail to mint due to the address wallet isn't the badge's owner or contract's owner", async () => {
-        // Add a badge
+    it("should not allow owner to mint to an address without a badge", async () => {
+        await expect(contract.mint(addr1.address)).to.be.revertedWith(
+            "VM Exception while processing transaction: reverted with reason string 'At least one badge is needed'"
+        )
+    })
+
+    it("should not allow another user to mint", async () => {
+        // Add a badge to another wallet
         await contract.addBadge(addr1.address, 1)
+
+        // Expect another user to not be able to mint it
         await expect(contract.connect(addr2).mint(addr1.address)).to.be.revertedWith(
-            "VM Exception while processing transaction: reverted with reason string 'Only contract's owner or token's owner are allowed to mint'"
+            "VM Exception while processing transaction: reverted with reason string 'Only owner or address with a badge are allowed to mint'"
         )
     })
 
     it("should start counting tokens from 1", async () => {
-        // Add a badge
+        // Add a badge and mint
         await contract.addBadge(addr1.address, 1)
-        // Mint a badge
         await contract.mint(addr1.address)
 
         // Expect getting the owner of token 0 to fail
@@ -68,37 +73,17 @@ describe("BnomialNFT", () => {
         await expect(contract.ownerOf(1)).to.not.be.reverted
     })
 
-    it("should get badges", async () => {
-        // Get the badges for unassigned wallet
-        expect(await contract.getBadges(addr1.address)).to.deep.equal([])
-    })
-
-    it("should add badge", async () => {
-        // Add a new badge
-        await contract.addBadge(addr1.address, 1)
-
-        // Mint a badge
-        await contract.mint(addr1.address)
-
-        // Expect the badges to contain only 1
-        expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1)])
-
-        // Add a new badge
-        await contract.addBadge(addr1.address, 2)
-
-        // Expect the badges to be [1, 2]
-        expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1), BigNumber.from(2)])
-    })
-
-    it("should add badge for a wallet that has no badges", async () => {
-        // Expect the badges to be empty
+    it("should add and get badges", async () => {
+        // Unassign wallets should have no badges
         expect(await contract.getBadges(addr1.address)).to.deep.equal([])
 
-        // Add a badge
+        // Add a new badge and check
         await contract.addBadge(addr1.address, 1)
-
-        // Expect the badges to be [1]
         expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1)])
+
+        // Add another badge and check
+        await contract.addBadge(addr1.address, 3)
+        expect(await contract.getBadges(addr1.address)).to.deep.equal([BigNumber.from(1), BigNumber.from(3)])
     })
 
     it("should allow only owner to add badges", async () => {
@@ -131,7 +116,7 @@ describe("BnomialNFT", () => {
         )
     })
 
-    it("should allow only one token per non-owner wallet", async () => {
+    it("should allow only one token per wallet", async () => {
         // Minting one badge should work
         await contract.addBadge(addr1.address, 2)
         await contract.mint(addr1.address)
@@ -142,23 +127,23 @@ describe("BnomialNFT", () => {
         )
     })
 
-    it("should block nft transfer", async () => {
+    it("should block transfers", async () => {
         // Minting one badge for owner wallet
         await contract.addBadge(owner.address, 1)
         await contract.mint(owner.address)
 
-        // transfer nft from owner wallet should fail
+        // Transfer token to another wallet should fail
         await expect(contract.transferFrom(owner.address, addr1.address, 1)).to.be.revertedWith(
             "ERC721: token transfer disabled"
         )
     })
 
-    it("should returns false when the wallet doesn't have a badge", async () => {
-        expect(await contract.canMint(addr1.address)).to.equal(false)
+    it("should not allow mint when the wallet doesn't have a badge", async () => {
+        expect(await contract.isMintAllowed(addr1.address)).to.equal(false)
     })
 
-    it("should returns true when the wallet has a badge", async () => {
+    it("should allow mint when the wallet has a badge", async () => {
         await contract.addBadge(addr1.address, 1)
-        expect(await contract.canMint(addr1.address)).to.equal(true)
+        expect(await contract.isMintAllowed(addr1.address)).to.equal(true)
     })
 })
