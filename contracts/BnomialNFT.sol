@@ -12,9 +12,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "./Base64.sol";
 
-contract BnomialNFT is ERC721, Ownable {
+contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
     using Counters for Counters.Counter;
 
     string public baseURI = "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
