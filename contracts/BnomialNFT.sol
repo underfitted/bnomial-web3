@@ -126,21 +126,18 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
 
     /**
      * @notice this function is only needed to create the keyframe times for the card animation
+     * @notice the number should be less than 1000000 (1.0)
      * @dev Helper function to convert float stored as an uint256 with a factor of 1e6 to a string
      * @param number the number to convert
      * @return text string text representation of the float number
      */
     function renderFloat(uint256 number) internal pure returns (string memory text) {
-        if (number == 1000000) {
-            text = string(abi.encodePacked(text, "1"));
-        } else {
-            string memory numberString = Strings.toString(number);
-            text = string(abi.encodePacked(text, "0."));
-            for (uint256 i = bytes(numberString).length; i < 6; i++) {
-                text = string(abi.encodePacked(text, "0"));
-            }
-            text = string(abi.encodePacked(text, numberString));
+        string memory numberString = Strings.toString(number);
+        text = string(abi.encodePacked(text, "0."));
+        for (uint256 i = bytes(numberString).length; i < 6; i++) {
+            text = string(abi.encodePacked(text, "0"));
         }
+        text = string(abi.encodePacked(text, numberString));
     }
 
     /**
@@ -274,13 +271,6 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
 
         // Render the SVG and encode it as base64
         string memory svg = renderSVG(tokenId);
-
-        // The padding is currently needed because of a bug in the Base64 encoding library
-        if (bytes(svg).length % 3 == 0) {
-            svg = string(abi.encodePacked(svg, " "));
-        } else if (bytes(svg).length % 3 == 2) {
-            svg = string(abi.encodePacked(svg, "  "));
-        }
 
         // Build the metadata
         string memory jsonData = string(

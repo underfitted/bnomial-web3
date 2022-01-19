@@ -57,6 +57,12 @@ library Base64 {
             mstore(result, encodedLen)
         }
 
+        if (result.length % 3 == 0) {
+            result = abi.encodePacked(result, " ");
+        } else if (result.length % 3 == 2) {
+            result = abi.encodePacked(result, "  ");
+        }
+
         return string(result);
     }
 }
