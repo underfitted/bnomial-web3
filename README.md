@@ -84,6 +84,14 @@ To run the gas price estimation:
 npm run gas
 ```
 
+## Test the SVG visualization
+
+The NFT is visualized as an SVG image generated in the contract using the on-chain data. To enable easier testing, you can use the [renderSVG.js](scripts/renderSVG.js) script to generate the SVG images and save it as `nft.svg`. To run the script you can use the following command:
+
+```
+npm run svg
+```
+
 ## Deploy
 
 To deploy the smart contract on the Mumbai test chain (Polygon):
