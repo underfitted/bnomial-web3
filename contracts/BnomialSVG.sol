@@ -32,6 +32,8 @@ library BnomialSVG {
      * @return text string text representation of the float number
      */
     function renderFloat(uint256 number) internal pure returns (string memory text) {
+        require(number < 1000000, "Number must be less than 1000000");
+
         string memory numberString = Strings.toString(number);
         text = string(abi.encodePacked(text, "0."));
         for (uint256 i = bytes(numberString).length; i < 6; i++) {
@@ -46,6 +48,8 @@ library BnomialSVG {
      * @return times string text representation of the keyframe times
      */
     function getAnimationTimes(uint256 badgesCount) internal pure returns (string memory times) {
+        require(badgesCount > 0, "Badges count must be greater than 0");
+
         uint256 showTime = (SHOW_TIME_PERCENTAGE * 10000) / badgesCount; // Optimized version of (SHOW_TIME_PERCENTAGE * badgeTime) / 100
 
         for (uint256 i = 0; i < badgesCount; i++) {
@@ -69,6 +73,8 @@ library BnomialSVG {
      * @return offsets string text representation of the keyframe offsets
      */
     function getAnimationOffsets(uint256 badgesCount) internal pure returns (string memory offsets) {
+        require(badgesCount > 0, "Badges count must be greater than 0");
+
         offsets = string(abi.encodePacked(offsets, "0 0;0 0;"));
 
         for (uint256 i = 1; i < badgesCount; i++) {
@@ -93,6 +99,8 @@ library BnomialSVG {
      * @return string the SVG <animateTransform> tag
      */
     function getAnimation(uint256 badgesCount) internal pure returns (string memory) {
+        require(badgesCount > 0, "Badges count must be greater than 0");
+
         return
             string(
                 abi.encodePacked(
