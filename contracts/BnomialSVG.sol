@@ -46,12 +46,17 @@ library BnomialSVG {
      * @return times string text representation of the keyframe times
      */
     function getAnimationTimes(uint256 badgesCount) internal pure returns (string memory times) {
-        uint256 badgeTime = 1000000 / badgesCount;
-        uint256 showTime = (SHOW_TIME_PERCENTAGE * badgeTime) / 100;
+        uint256 showTime = (SHOW_TIME_PERCENTAGE * 10000) / badgesCount; // Optimized version of (SHOW_TIME_PERCENTAGE * badgeTime) / 100
 
         for (uint256 i = 0; i < badgesCount; i++) {
             times = string(
-                abi.encodePacked(times, renderFloat(i * badgeTime), ";", renderFloat(i * badgeTime + showTime), ";")
+                abi.encodePacked(
+                    times,
+                    renderFloat((i * 1000000) / badgesCount),
+                    ";",
+                    renderFloat((i * 1000000) / badgesCount + showTime),
+                    ";"
+                )
             );
         }
 
