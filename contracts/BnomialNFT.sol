@@ -106,10 +106,10 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
      * @notice the name of a badge is displayed on the NFT image
      * @dev Set the name of a badge ID
      * @param badgeId ID of the badge
-     * @param name the name to be associated to the badge
+     * @param badgeName the name to be associated to the badge
      */
-    function setBadgeName(uint256 badgeId, string memory name) external {
-        _badgeNames[badgeId] = name;
+    function setBadgeName(uint256 badgeId, string memory badgeName) external {
+        _badgeNames[badgeId] = badgeName;
     }
 
     /**
@@ -122,15 +122,15 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
         // Preparte the badges data
-        address owner = ownerOf(tokenId);
-        uint256[] memory badges = _badges[owner];
+        address badgeOwner = ownerOf(tokenId);
+        uint256[] memory badges = _badges[badgeOwner];
         string[] memory names = new string[](badges.length);
         for (uint256 i = 0; i < badges.length; i++) {
             names[i] = _badgeNames[badges[i]];
         }
 
         // Render the SVG
-        string memory svg = BnomialSVG.renderSVG(owner, badges, names);
+        string memory svg = BnomialSVG.renderSVG(badgeOwner, badges, names);
 
         // Build the metadata
         string memory jsonData = string(
