@@ -4,7 +4,7 @@
         "max-line-length": "off",
         "avoid-suicide": "error",
         "avoid-sha3": "warn",
-        "compiler-version": ["error", "^0.8.2"],
+        "compiler-version": ["error", "^0.8.0"],
         "func-visibility": ["warn", { "ignoreConstructors": true }],
         "no-empty-blocks": "off",
         "reason-string": ["off"],
