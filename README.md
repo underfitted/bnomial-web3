@@ -114,7 +114,7 @@ npm run verify:mumbai -- <smart contract address>
 
 ## Deployed contract for testing
 
-The current NFT contract is deployed on the Mumbai testnet here: [0x03115Dafa9c3F23BEB8ECDA7F099fD4C09981E82](https://mumbai.polygonscan.com/address/0x03115Dafa9c3F23BEB8ECDA7F099fD4C09981E82)
+The current NFT contract is deployed on the Mumbai testnet here: [0x4312119aA4F52bD8079d033A82C82BAD85FeA68A](https://mumbai.polygonscan.com/address/0x4312119aA4F52bD8079d033A82C82BAD85FeA68A)
 
 The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
 
