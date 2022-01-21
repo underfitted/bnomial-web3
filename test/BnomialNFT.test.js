@@ -15,22 +15,6 @@ describe("BnomialNFT", () => {
         contract = await BnomialNFTContract.deploy()
     })
 
-    it("should change the base URI", async () => {
-        // Change the base URI and check
-        await contract.setBaseURI("ipfs://testuri")
-        expect(await contract.baseURI()).to.equal("ipfs://testuri")
-    })
-
-    it("should allow only owner to set the base URI", async () => {
-        // Expect setting the URI from another wallet to fail
-        await expect(contract.connect(addr1).setBaseURI("ipfs://testuri")).to.be.revertedWith(
-            "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
-        )
-
-        // Expect setting the URI from owner to succeed
-        await expect(contract.setBaseURI("ipfs://testuri")).to.not.be.reverted
-    })
-
     it("should allow mint only if the address has a badge assigned", async () => {
         // Add a badge and mint
         await contract.addBadge(addr1.address, 1)
@@ -112,18 +96,29 @@ describe("BnomialNFT", () => {
         await contract.addBadge(addr1.address, 1)
     })
 
-    it("should return a JSON metadata", async () => {
-        const metadataJson =
-            '{"name":"Bnomial Badges","description":"This NFT represents an on-chain proof of the owners achievements on Bnomial","image":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.png","animation_url":"ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/nft.html?badges=2,20,"}'
-        const expectedMetadata = "data:application/json;base64," + Buffer.from(metadataJson).toString("base64")
+    it("should return JSON metadata", async () => {
+        // Set badge names
+        await contract.setBadgeName(1, "test 1")
+        await contract.setBadgeName(1, "test 2")
 
         // Mint a badge and add another one
-        await contract.addBadge(addr1.address, 2)
+        await contract.addBadge(addr1.address, 1)
         await contract.mint(addr1.address)
-        await contract.addBadge(addr1.address, 20)
+        await contract.addBadge(addr1.address, 2)
 
         // Expect the returned metadata to be correct
-        expect(await contract.tokenURI(1)).to.equal(expectedMetadata)
+        const encodedJson = await contract.tokenURI(1)
+        const metadata = JSON.parse(Buffer.from(encodedJson.slice(29), "base64").toString())
+
+        expect(metadata.name).to.equal("Bnomial Badges")
+        expect(metadata.description).to.equal(
+            "This NFT represents an on-chain proof of the owners achievements on Bnomial"
+        )
+
+        // Expect the image to be SVG
+        const svg = Buffer.from(metadata.image.slice(26), "base64").toString()
+        expect(svg.startsWith("<svg")).to.be.true
+        expect(svg.endsWith("</svg>")).to.be.true
     })
 
     it("should throw an exception for getting the metadata of a non-existing token", async () => {
@@ -166,12 +161,23 @@ describe("BnomialNFT", () => {
     it("should burn the nft", async () => {
         // Minting one badge for owner wallet
         balance_before_mint = await contract.balanceOf(owner.address)
-        await contract.addBadge(owner.address, 1);
-        await contract.mint(owner.address);
-        await contract.burn(1);
+        await contract.addBadge(owner.address, 1)
+        await contract.mint(owner.address)
+        await contract.burn(1)
         balance_after_burn = await contract.balanceOf(owner.address)
 
         // minted nft should be buned by now so balance before == balance after burn
-        expect(balance_before_mint).to.equal(balance_after_burn);
-    });
+        expect(balance_before_mint).to.equal(balance_after_burn)
+    })
+
+    it("should get and set the name of a badge", async () => {
+        // Get the name of an unnamed badge
+        expect(await contract.getBadgeName(1)).to.equal("")
+
+        // Set the name of the badge
+        await contract.setBadgeName(1, "Test badge")
+
+        // Get the name of the badge again
+        expect(await contract.getBadgeName(1)).to.equal("Test badge")
+    })
 })

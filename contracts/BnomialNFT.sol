@@ -14,34 +14,19 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "./Base64.sol";
+import "./BnomialSVG.sol";
 
 contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
     using Counters for Counters.Counter;
 
-    string public baseURI = "ipfs://QmacF9yRXkUEUHvJuCCC77JhzSLMWWJ8vFciTeVfzEoByf/";
     Counters.Counter private _tokenIdCounter;
     mapping(address => uint256[]) private _badges;
+    mapping(uint256 => string) private _badgeNames;
 
     /**
      * @dev Default constructor
      */
     constructor() ERC721("Bnomial Achievement Badge", "BNOMIAL") {}
-
-    /**
-     * @dev Get the base URI for the tokens
-     * @return string representing the base URI
-     */
-    function _baseURI() internal view override returns (string memory) {
-        return baseURI;
-    }
-
-    /**
-     * @dev Set the base URI for the tokens
-     * @param uri new base URI
-     */
-    function setBaseURI(string memory uri) external onlyOwner {
-        baseURI = uri;
-    }
 
     /**
      * @dev Returns the total number of tokens minted
@@ -96,41 +81,6 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
     }
 
     /**
-     * @notice The token URI is a base64 encoded JSON object pointing to an HTML page and specifying the badges owned by the token owner
-     * @dev Returns token URI
-     * @param tokenId the ID of the token for which the URI should be retrieved
-     * @return string the token URI
-     */
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-
-        address owner_ = ownerOf(tokenId);
-        uint256[] memory badges = _badges[owner_];
-
-        string memory badgesString = "";
-        for (uint256 i = 0; i < badges.length; i++) {
-            badgesString = string(abi.encodePacked(badgesString, Strings.toString(badges[i]), ","));
-        }
-
-        string memory part0 = '{"name":"Bnomial Badges",';
-        string
-            memory part1 = '"description":"This NFT represents an on-chain proof of the owners achievements on Bnomial",';
-        string memory part2 = '"image":"';
-        string memory part3 = _baseURI();
-        string memory part4 = 'nft.png",';
-        string memory part5 = '"animation_url":"';
-        string memory part6 = _baseURI();
-        string memory part7 = "nft.html?badges=";
-        string memory part8 = badgesString;
-        string memory part9 = '"}';
-
-        string memory json = Base64.encode(
-            bytes(string(abi.encodePacked(part0, part1, part2, part3, part4, part5, part6, part7, part8, part9)))
-        );
-        return string(abi.encodePacked("data:application/json;base64,", json));
-    }
-
-    /**
      * @notice All transfer transactions are reverted, because the badge NFTs should not be transferable
      * @dev Transfer a token to another address
      */
@@ -140,5 +90,59 @@ contract BnomialNFT is ERC721, Ownable, ERC721Burnable {
         uint256
     ) internal pure override {
         revert("ERC721: token transfer disabled");
+    }
+
+    /**
+     * @notice the name of a badge is displayed on the NFT image
+     * @dev Get the name associated to a badge ID
+     * @param badgeId ID of the badge
+     * @return string name of the badge that will be displayed on the NFT
+     */
+    function getBadgeName(uint256 badgeId) external view returns (string memory) {
+        return _badgeNames[badgeId];
+    }
+
+    /**
+     * @notice the name of a badge is displayed on the NFT image
+     * @dev Set the name of a badge ID
+     * @param badgeId ID of the badge
+     * @param badgeName the name to be associated to the badge
+     */
+    function setBadgeName(uint256 badgeId, string memory badgeName) external {
+        _badgeNames[badgeId] = badgeName;
+    }
+
+    /**
+     * @notice The token URI is a base64 encoded JSON object containing an SVG imagesrepresenting the badges owned by the token owner
+     * @dev Returns token URI
+     * @param tokenId the ID of the token for which the URI should be retrieved
+     * @return string the token URI
+     */
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        // Preparte the badges data
+        address badgeOwner = ownerOf(tokenId);
+        uint256[] memory badges = _badges[badgeOwner];
+        string[] memory names = new string[](badges.length);
+        for (uint256 i = 0; i < badges.length; i++) {
+            names[i] = _badgeNames[badges[i]];
+        }
+
+        // Render the SVG
+        string memory svg = BnomialSVG.renderSVG(badgeOwner, badges, names);
+
+        // Build the metadata
+        string memory jsonData = string(
+            abi.encodePacked(
+                '{"name":"Bnomial Badges",',
+                '"description":"This NFT represents an on-chain proof of the owners achievements on Bnomial",',
+                '"attributes": [],',
+                '"image":"data:image/svg+xml;base64,',
+                Base64.encode(bytes(svg)),
+                '"}'
+            )
+        );
+        return string(abi.encodePacked("data:application/json;base64,", Base64.encode(bytes(jsonData))));
     }
 }

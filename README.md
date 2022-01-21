@@ -84,6 +84,14 @@ To run the gas price estimation:
 npm run gas
 ```
 
+## Test the SVG visualization
+
+The NFT is visualized as an SVG image generated in the contract using the on-chain data. To enable easier testing, you can use the [renderSVG.js](scripts/renderSVG.js) script to generate the SVG images and save it as `nft.svg`. To run the script you can use the following command:
+
+```
+npm run svg
+```
+
 ## Deploy
 
 To deploy the smart contract on the Mumbai test chain (Polygon):
@@ -106,7 +114,7 @@ npm run verify:mumbai -- <smart contract address>
 
 ## Deployed contract for testing
 
-The current NFT contract is deployed on the Mumbai testnet here: [0x35b5147E74993fD8B77c859d5489A22BFB21e015](https://mumbai.polygonscan.com/address/0x0f4e762a781E72AEB3720E3f76F1fD2751D25F77)
+The current NFT contract is deployed on the Mumbai testnet here: [0x4312119aA4F52bD8079d033A82C82BAD85FeA68A](https://mumbai.polygonscan.com/address/0x4312119aA4F52bD8079d033A82C82BAD85FeA68A)
 
 The current Token contract is deployed on the Mumbai testnet here: [0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA](https://mumbai.polygonscan.com/address/0xc4C99f33F686A74a2Fe95B26Ce317708f605A9eA)
 
