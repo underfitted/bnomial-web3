@@ -106,11 +106,11 @@ library BnomialSVG {
                 abi.encodePacked(
                     '<animateTransform attributeName="transform" dur="',
                     Strings.toString(badgesCount * CARD_TIME_DURATION),
-                    's" begin="0s" repeatCount="indefinite" type="translate" keyTimes="',
+                    's" repeatCount="indefinite" type="translate" keyTimes="',
                     getAnimationTimes(badgesCount),
                     '" values="',
                     getAnimationOffsets(badgesCount),
-                    '" calcMode="spline"></animateTransform>'
+                    '"></animateTransform>'
                 )
             );
     }
@@ -155,7 +155,7 @@ library BnomialSVG {
     ) internal pure returns (string memory svg) {
         svg = string(
             abi.encodePacked(
-                '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 100 100">',
+                '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" preserveAspectRatio="xMinYMin meet" viewBox="0 0 100 100">',
                 '<rect x="0" y="0" width="100" height="100" fill="#000000"/><g><text font-weight="bold" text-anchor="middle" font-size="15" y="15" x="50" fill="#ffffff" font-family="sans-serif">BNOMIAL</text><text font-weight="100" text-anchor="middle" font-size="4" y="23" x="50" fill="#ffffff" font-family="sans-serif">ACHIEVEMENTS BADGE</text><text font-weight="100" text-anchor="middle" font-size="2" y="29" x="50" fill="#aaaaaa" font-family="sans-serif">',
                 addressToString(owner),
                 "</text></g>",

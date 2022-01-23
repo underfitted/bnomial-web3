@@ -41,7 +41,7 @@ describe("BnomialSVG", () => {
 
     it("should get animation SVG tag", async () => {
         expect(await contract.getAnimation(2)).to.equal(
-            '<animateTransform attributeName="transform" dur="4s" begin="0s" repeatCount="indefinite" type="translate" keyTimes="0.000000;0.475000;0.500000;0.975000;1" values="0 0;0 0;-70 0;-70 0;0 0" calcMode="spline"></animateTransform>'
+            '<animateTransform attributeName="transform" dur="4s" repeatCount="indefinite" type="translate" keyTimes="0.000000;0.475000;0.500000;0.975000;1" values="0 0;0 0;-70 0;-70 0;0 0"></animateTransform>'
         )
 
         await expect(contract.getAnimation(0)).to.be.revertedWith("Badges count must be greater than 0")
@@ -55,7 +55,7 @@ describe("BnomialSVG", () => {
 
     it("should render SVG", async () => {
         expect(await contract.renderSVG("0xF2DAd1bFEF508d2E0cf44D61538E6487f15cDF63", [1], ["test"])).to.equal(
-            '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="#000000"/><g><text font-weight="bold" text-anchor="middle" font-size="15" y="15" x="50" fill="#ffffff" font-family="sans-serif">BNOMIAL</text><text font-weight="100" text-anchor="middle" font-size="4" y="23" x="50" fill="#ffffff" font-family="sans-serif">ACHIEVEMENTS BADGE</text><text font-weight="100" text-anchor="middle" font-size="2" y="29" x="50" fill="#aaaaaa" font-family="sans-serif">0xf2dad1bfef508d2e0cf44d61538e6487f15cdf63</text></g><g><g transform="translate(0,0)"><rect x="20" y="40" width="60" height="40" fill="#222222" rx="2" stroke="#ffffff" stroke-width="0.2"/><text font-weight="100" text-anchor="middle" font-size="3" y="45" x="25" fill="#ffffff" font-family="sans-serif">#1</text><text text-anchor="middle" font-size="6" y="60" x="50" fill="#ffffff" font-family="sans-serif">test</text></g><animateTransform attributeName="transform" dur="2s" begin="0s" repeatCount="indefinite" type="translate" keyTimes="0.000000;0.950000;1" values="0 0;0 0;0 0" calcMode="spline"></animateTransform></g><g><text font-weight="100" text-anchor="middle" font-size="2.5" y="93" x="50" fill="#ffffff" font-family="sans-serif">BADGES COUNT ⋅ 1</text></g></svg>'
+            '<svg xmlns="http://www.w3.org/2000/svg" version="1.2" preserveAspectRatio="xMinYMin meet" viewBox="0 0 100 100"><rect x="0" y="0" width="100" height="100" fill="#000000"/><g><text font-weight="bold" text-anchor="middle" font-size="15" y="15" x="50" fill="#ffffff" font-family="sans-serif">BNOMIAL</text><text font-weight="100" text-anchor="middle" font-size="4" y="23" x="50" fill="#ffffff" font-family="sans-serif">ACHIEVEMENTS BADGE</text><text font-weight="100" text-anchor="middle" font-size="2" y="29" x="50" fill="#aaaaaa" font-family="sans-serif">0xf2dad1bfef508d2e0cf44d61538e6487f15cdf63</text></g><g><g transform="translate(0,0)"><rect x="20" y="40" width="60" height="40" fill="#222222" rx="2" stroke="#ffffff" stroke-width="0.2"/><text font-weight="100" text-anchor="middle" font-size="3" y="45" x="25" fill="#ffffff" font-family="sans-serif">#1</text><text text-anchor="middle" font-size="6" y="60" x="50" fill="#ffffff" font-family="sans-serif">test</text></g><animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="translate" keyTimes="0.000000;0.950000;1" values="0 0;0 0;0 0"></animateTransform></g><g><text font-weight="100" text-anchor="middle" font-size="2.5" y="93" x="50" fill="#ffffff" font-family="sans-serif">BADGES COUNT ⋅ 1</text></g></svg>'
         )
     })
 })
